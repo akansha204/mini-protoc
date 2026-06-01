@@ -81,14 +81,21 @@ func isDigit(ch byte) bool {
 }
 
 func (l *Lexer) readString() string {
-	position := l.position + 1
+	position := l.position
 	for {
 		l.readChar()
-		if l.ch == '"' || l.ch == 0 {
+		if l.ch == '\\' {
+			l.readChar()
+			continue
+		}
+		if l.ch == '"' {
 			break
 		}
+		if l.ch == 0 {
+			return l.input[position:l.position]
+		}
 	}
-	return l.input[position:l.position]
+	return l.input[position : l.position+1]
 }
 
 func (l *Lexer) NextToken() token.Token {
