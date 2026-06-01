@@ -37,7 +37,7 @@ func TestNextToken(t *testing.T) {
 	}{
 		{token.SYNTAX, "syntax"},
 		{token.ASSIGN, "="},
-		{token.STRING, `"proto3"`},
+		{token.STRING, "proto3"},
 		{token.SEMICOLON, ";"},
 
 		{token.PACKAGE, "package"},
