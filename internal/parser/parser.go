@@ -3,6 +3,8 @@ package parser
 import (
 	"fmt"
 
+	"strconv"
+
 	"github.com/akansha204/mini-protoc/internal/ast"
 	"github.com/akansha204/mini-protoc/internal/lexer"
 	"github.com/akansha204/mini-protoc/internal/token"
@@ -137,13 +139,51 @@ func (p *Parser) parseMessage() *ast.Message {
 	if !p.expectPeek(token.IDENT) {
 		return nil
 	}
-	if !p.expectPeek(token.LBRACE) {
-		return nil
-	}
 	msg := &ast.Message{
 		Name: p.curToken.Literal,
 	}
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+	p.nextToken()
+
+	for !p.curTokenIs(token.RBRACE) && !p.curTokenIs(token.EOF) {
+		field := p.parseField()
+		if field != nil {
+			msg.Fields = append(msg.Fields, field)
+		}
+		p.nextToken()
+	}
 	return msg
+}
+
+func (p *Parser) parseField() *ast.Field {
+	fieldType := p.curToken.Literal
+
+	if !p.expectPeek(token.IDENT) {
+		return nil
+	}
+	fieldName := p.peekToken.Literal
+
+	if !p.expectPeek(token.ASSIGN) {
+		return nil
+	}
+	if !p.expectPeek(token.NUMBER) {
+		return nil
+	}
+	fieldNumber, err := strconv.Atoi(p.curToken.Literal)
+	if err != nil {
+		return nil
+	}
+	if !p.expectPeek(token.SEMICOLON) {
+		return nil
+	}
+	return &ast.Field{
+		Type:   fieldType,
+		Name:   fieldName,
+		Number: fieldNumber,
+	}
+
 }
 
 func (p *Parser) parseService() *ast.Service {
