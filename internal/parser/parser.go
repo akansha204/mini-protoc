@@ -95,15 +95,58 @@ func (p *Parser) ParseProtoFile() *ast.ProtoFile {
 }
 
 func (p *Parser) parseSyntax(file *ast.ProtoFile) {
+	if !p.expectPeek(token.ASSIGN) {
+		return
+	}
+
+	if !p.expectPeek(token.STRING) {
+		return
+	}
+	file.Syntax = p.curToken.Literal
+
+	if !p.expectPeek(token.SEMICOLON) {
+		return
+	}
+
 }
 
 func (p *Parser) parsePackage(file *ast.ProtoFile) {
+	if !p.expectPeek(token.IDENT) {
+		return
+	}
+	if !p.expectPeek(token.DOT) {
+		return
+	}
+	file.Package = p.curToken.Literal
+
+	if !p.expectPeek(token.SEMICOLON) {
+		return
+	}
+
 }
 
 func (p *Parser) parseMessage() *ast.Message {
-	return nil
+	if !p.expectPeek(token.IDENT) {
+		return nil
+	}
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+	msg := &ast.Message{
+		Name: p.curToken.Literal,
+	}
+	return msg
 }
 
 func (p *Parser) parseService() *ast.Service {
-	return nil
+	if !p.expectPeek(token.IDENT) {
+		return nil
+	}
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+	svc := &ast.Service{
+		Name: p.curToken.Literal,
+	}
+	return svc
 }
