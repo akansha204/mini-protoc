@@ -114,10 +114,18 @@ func (p *Parser) parsePackage(file *ast.ProtoFile) {
 	if !p.expectPeek(token.IDENT) {
 		return
 	}
-	if !p.expectPeek(token.DOT) {
-		return
+	pkg := p.curToken.Literal
+
+	for p.peekTokenIs(token.DOT) {
+		if !p.expectPeek(token.DOT) {
+			return
+		}
+		if !p.expectPeek(token.IDENT) {
+			return
+		}
+		pkg += "." + p.curToken.Literal
 	}
-	file.Package = p.curToken.Literal
+	file.Package = pkg
 
 	if !p.expectPeek(token.SEMICOLON) {
 		return
