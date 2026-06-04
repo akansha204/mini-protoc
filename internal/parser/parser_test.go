@@ -30,8 +30,14 @@ func TestParsePackage(t *testing.T) {
 }
 func TestParseMessage(t *testing.T) {
 	input := `
-		message Person {
-		}
+		 message AddRequest {
+	        int32 a = 1;
+	        int64 b = 2;
+	        string user_name = 3;
+	        bool active = 4;
+	        float x = 5;
+	        double y = 6;
+        }
 	`
 	l := lexer.New(input)
 	p := New(l)
