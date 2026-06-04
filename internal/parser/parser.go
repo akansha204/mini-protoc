@@ -163,7 +163,7 @@ func (p *Parser) parseField() *ast.Field {
 	if !p.expectPeek(token.IDENT) {
 		return nil
 	}
-	fieldName := p.peekToken.Literal
+	fieldName := p.curToken.Literal
 
 	if !p.expectPeek(token.ASSIGN) {
 		return nil
