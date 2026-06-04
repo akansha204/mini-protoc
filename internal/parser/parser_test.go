@@ -48,8 +48,10 @@ func TestParseMessage(t *testing.T) {
 }
 func TestParseService(t *testing.T) {
 	input := `
-		service Greeter {
-		}
+		service CalculatorService {
+	        rpc Add(AddRequest) returns (AddResponse);
+	        rpc Multiply(AddRequest) returns (AddResponse);
+        } 
 	`
 	l := lexer.New(input)
 	p := New(l)
