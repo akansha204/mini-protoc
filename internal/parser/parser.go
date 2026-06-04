@@ -190,11 +190,62 @@ func (p *Parser) parseService() *ast.Service {
 	if !p.expectPeek(token.IDENT) {
 		return nil
 	}
-	if !p.expectPeek(token.LBRACE) {
-		return nil
-	}
 	svc := &ast.Service{
 		Name: p.curToken.Literal,
 	}
+	if !p.expectPeek(token.LBRACE) {
+		return nil
+	}
+	p.nextToken()
+	for !p.curTokenIs(token.RBRACE) && !p.curTokenIs(token.EOF) {
+		if p.curTokenIs(token.RPC) {
+			rpc := p.parseRPC()
+			if rpc != nil {
+				svc.RPC = append(svc.RPC, rpc)
+			}
+		}
+		p.nextToken()
+	}
+
 	return svc
+}
+
+func (p *Parser) parseRPC() *ast.RPC {
+	if !p.expectPeek(token.IDENT) {
+		return nil
+	}
+	rpc := &ast.RPC{
+		Name: p.curToken.Literal,
+	}
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+	if !p.expectPeek(token.IDENT) {
+		return nil
+	}
+	rpc.RequestType = p.curToken.Literal
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+	if !p.expectPeek(token.RETURNS) {
+		return nil
+	}
+	if !p.expectPeek(token.LPAREN) {
+		return nil
+	}
+	if !p.expectPeek(token.IDENT) {
+		return nil
+	}
+	rpc.ResponseType = p.curToken.Literal
+
+	if !p.expectPeek(token.RPAREN) {
+		return nil
+	}
+	if !p.expectPeek(token.SEMICOLON) {
+		return nil
+	}
+
+	return rpc
+
 }
