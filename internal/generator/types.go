@@ -8,3 +8,10 @@ var typeMap = map[string]string{
 	"float":  "float32",
 	"double": "float64",
 }
+
+func goType(protoType string) string {
+	if goType, ok := typeMap[protoType]; ok {
+		return goType
+	}
+	return protoType
+}
