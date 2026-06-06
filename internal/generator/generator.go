@@ -22,6 +22,10 @@ func (g *Generator) Generate(proto *ast.ProtoFile) string {
 		g.generateMessage(msg)
 	}
 
+	for _, service := range proto.Services {
+		g.generateService(service)
+	}
+
 	return g.builder.String()
 }
 

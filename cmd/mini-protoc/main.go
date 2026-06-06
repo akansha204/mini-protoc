@@ -15,7 +15,7 @@ func main() {
 
 		Messages: []*ast.Message{
 			{
-				Name: "User",
+				Name: "UserRequest",
 				Fields: []*ast.Field{
 					{
 						Type:   "string",
@@ -30,7 +30,7 @@ func main() {
 				},
 			},
 			{
-				Name: "Person",
+				Name: "UserResponse",
 				Fields: []*ast.Field{
 					{
 						Type:   "string",
@@ -41,6 +41,23 @@ func main() {
 						Type:   "int32",
 						Name:   "age",
 						Number: 2,
+					},
+				},
+			},
+		},
+		Services: []*ast.Service{
+			{
+				Name: "UserService",
+				RPC: []*ast.RPC{
+					{
+						Name:         "GetUser",
+						RequestType:  "UserRequest",
+						ResponseType: "UserResponse",
+					},
+					{
+						Name:         "CreateUser",
+						RequestType:  "UserRequest",
+						ResponseType: "UserResponse",
 					},
 				},
 			},
