@@ -18,6 +18,10 @@ func New() *Generator {
 func (g *Generator) Generate(proto *ast.ProtoFile) string {
 	g.generatePackage(proto.Package)
 
+	for _, msg := range proto.Messages {
+		g.generateMessage(msg)
+	}
+
 	return g.builder.String()
 }
 
