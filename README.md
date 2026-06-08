@@ -75,9 +75,35 @@ type UserService interface {
 	GetUser(req UserRequest) (UserResponse, error)
 	CreateUser(req UserRequest) (UserResponse, error)
 }
+
+type UserServiceClient struct {
+}
+
+func NewUserServiceClient() *UserServiceClient {
+	return &UserServiceClient{}
+}
+
+func (c *UserServiceClient) GetUser(req UserRequest) (UserResponse, error) {
+	panic("not implemented")
+}
+
+func (c *UserServiceClient) CreateUser(req UserRequest) (UserResponse, error) {
+	panic("not implemented")
+}
+
+func RegisterUserService(service UserService) {
+	panic("not implemented")
+}
 ```
 
-The service generator also emits a `UserServiceClient`, `NewUserServiceClient`, method stubs, and a `RegisterUserService` stub. Runtime transport, server registration, and real client calls are intentionally not implemented yet.
+### Generated Artifacts
+
+- Message structs represent parsed proto messages as exported Go structs.
+- The service interface describes the server-side contract that an implementation must satisfy.
+- The client stub provides a generated `<ServiceName>Client` type, constructor, and RPC method names matching the service definition.
+- The registration stub provides a generated `Register<ServiceName>()` entry point for wiring a service implementation into a runtime.
+
+Generated client RPC methods and registration functions are currently placeholders. They call `panic("not implemented")` and are intended to be connected to a future mini-rpc runtime rather than performing real RPC behavior today.
 
 ## Architecture
 
@@ -187,6 +213,7 @@ The following common protobuf features are outside the current project scope:
 - Package-to-directory mapping.
 - Go struct tags.
 - Generated marshal/unmarshal methods.
+- Generated service stubs do not yet perform network transport, service registration, serialization, or RPC dispatch.
 - Real RPC transport/client/server runtime behavior.
 
 `internal/protobuf` and `internal/generator/serializer_generator.go` are currently scaffolding for future serialization work.
