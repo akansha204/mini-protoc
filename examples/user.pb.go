@@ -15,3 +15,22 @@ type UserService interface {
 	CreateUser(req UserRequest) (UserResponse, error)
 }
 
+type UserServiceClient struct {
+}
+
+func NewUserServiceClient() *UserServiceClient {
+	return &UserServiceClient{}
+}
+
+func (c *UserServiceClient) GetUser(req UserRequest) (UserResponse, error) {
+	panic("not implemented")
+}
+
+func (c *UserServiceClient) CreateUser(req UserRequest) (UserResponse, error) {
+	panic("not implemented")
+}
+
+func RegisterUserService(service UserService) {
+	panic("not implemented")
+}
+
