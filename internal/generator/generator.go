@@ -31,5 +31,10 @@ func (g *Generator) Generate(proto *ast.ProtoFile) string {
 
 func (g *Generator) generatePackage(pkg string) {
 	pkg = strings.ReplaceAll(pkg, ".", "_")
+
 	g.builder.WriteString(fmt.Sprintf("package %s\n\n", pkg))
+
+	g.builder.WriteString("import (\n")
+	g.builder.WriteString("\t\"github.com/akansha204/mini-rpc/rpc\"\n")
+	g.builder.WriteString(")\n\n")
 }
