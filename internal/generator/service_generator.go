@@ -64,7 +64,7 @@ func (g *Generator) generateService(service *ast.Service) {
 
 	fmt.Fprintf(
 		&g.builder,
-		"func Register%s(service %s) {\n",
+		"func Register%s(server *rpc.Server, service %s) {\n",
 		service.Name,
 		service.Name,
 	)
